@@ -10,18 +10,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 const val BASE_URL = "https://api.openweathermap.org/data/3.0/"
-class WeatherApi {
-/*example api.openweathermap.org/data/3.0/onecall?lat=38.8&lon=12.09&callback=test
-
-https://api.openweathermap.org/data/3.0/onecall?lat=55.3443&lon=86.0621&exclude={part}&appid=2ce0a504eccbb5cc5fdb54b14b60fab2
-KEMEROVO COORDINATES
-    latitude 55.3443
-    longitude 86.0621
-    https://api.openweathermap.org/data/2.5/forecast?id=1503901&appid=2ce0a504eccbb5cc5fdb54b14b60fab2
-
-https://openweathermap.org/forecast16
-https://api.openweathermap.org/data/2.5/forecast?daily&lat=55.3443&lon=86.0621&units=metric&appid=2ce0a504eccbb5cc5fdb54b14b60fab2
-*/
     interface WeatherApi {
         @GET("forecast")
         fun getWeather(
@@ -35,8 +23,6 @@ https://api.openweathermap.org/data/2.5/forecast?daily&lat=55.3443&lon=86.0621&u
             units:String,
             @Query("appid")
             apikey:String
-
-
 
         ): Call<DataWeatherFromNet>
 
@@ -57,4 +43,3 @@ https://api.openweathermap.org/data/2.5/forecast?daily&lat=55.3443&lon=86.0621&u
         }
 
     }
-}

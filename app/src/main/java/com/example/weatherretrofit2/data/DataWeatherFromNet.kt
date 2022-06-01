@@ -11,7 +11,7 @@ data class DataWeatherFromNet(
     @SerializedName("cod")
     val cod: String,
     @SerializedName("list")
-    val list: List<WeatherDescriptionNw>,
+    val list: List<WeatherNw>,
     @SerializedName("message")
     val message: Int
 )
@@ -43,7 +43,7 @@ data class Coord(
 )
 
 
-data class WeatherDescriptionNw(
+data class WeatherNw(
     @SerializedName("clouds")
     val clouds: Clouds,
     @SerializedName("dt")
@@ -61,7 +61,7 @@ data class WeatherDescriptionNw(
     @SerializedName("visibility")
     val visibility: Int,
     @SerializedName("weather")
-    val weather: List<WeatherNw>,
+    val weather: List<Weather>,
     @SerializedName("wind")
     val wind: Wind
 )
@@ -102,7 +102,7 @@ data class Sys(
     val pod: String
 )
 
-data class WeatherNw(
+data class Weather(
     @SerializedName("description")
     val description: String,
     @SerializedName("icon")
@@ -121,3 +121,4 @@ data class Wind(
     @SerializedName("speed")
     val speed: Double
 )
+

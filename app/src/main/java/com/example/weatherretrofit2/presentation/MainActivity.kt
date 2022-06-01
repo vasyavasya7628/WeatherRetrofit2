@@ -1,7 +1,8 @@
-package com.example.weatherretrofit2
+package com.example.weatherretrofit2.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.weatherretrofit2.R
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
