@@ -36,7 +36,6 @@ interface WeatherApi {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build()
-            Timber.d("NET_DATA",retrofit.toString())
             return retrofit.create(WeatherApi::class.java)
         }
 
