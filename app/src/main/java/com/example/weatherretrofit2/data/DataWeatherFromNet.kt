@@ -3,16 +3,11 @@ package com.example.weatherretrofit2.data
 
 import com.google.gson.annotations.SerializedName
 
-data class DataFromNet(
-    @SerializedName("city")
+data class DataWeatherFromNet(
     val city: City,
-    @SerializedName("cnt")
     val cnt: Int,
-    @SerializedName("cod")
     val cod: String,
-    @SerializedName("list")
-    val list: List<WeatherNetwork>,
-    @SerializedName("message")
+    val list: List<WeatherDesrcNw>,
     val message: Int
 )
 
@@ -43,7 +38,7 @@ data class Coord(
 )
 
 
-data class WeatherNetwork(
+data class WeatherDesrcNw(
     @SerializedName("clouds")
     val clouds: Clouds,
     @SerializedName("dt")
@@ -61,7 +56,7 @@ data class WeatherNetwork(
     @SerializedName("visibility")
     val visibility: Int,
     @SerializedName("weather")
-    val weather: List<Weather>,
+    val weather: List<WeatherIconNet>,
     @SerializedName("wind")
     val wind: Wind
 )
@@ -102,14 +97,10 @@ data class Sys(
     val pod: String
 )
 
-data class Weather(
-    @SerializedName("description")
+data class WeatherIconNet(
     val description: String,
-    @SerializedName("icon")
     val icon: String,
-    @SerializedName("id")
     val id: Int,
-    @SerializedName("main")
     val main: String
 )
 
