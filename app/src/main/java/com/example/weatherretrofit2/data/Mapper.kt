@@ -1,9 +1,4 @@
-package com.example.weatherretrofit2
-
-import com.example.weatherretrofit2.data.DataWeather
-import com.example.weatherretrofit2.data.WeatherDesrcNw
-import com.example.weatherretrofit2.data.WeatherIconDomain
-import com.example.weatherretrofit2.data.WeatherIconNet
+package com.example.weatherretrofit2.data
 
 fun WeatherDesrcNw.toDomain(): DataWeather{
     return DataWeather(

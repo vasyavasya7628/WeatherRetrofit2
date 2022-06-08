@@ -6,11 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.example.weatherretrofit2.WeatherApi
 import com.example.weatherretrofit2.data.DataWeather
 import com.example.weatherretrofit2.data.DataWeatherFromNet
-import com.example.weatherretrofit2.toDomain
+import com.example.weatherretrofit2.data.toDomain
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
-import javax.security.auth.callback.Callback
 
 private const val ID = "1503901"
 private const val MEASUREMENT = "metric"
