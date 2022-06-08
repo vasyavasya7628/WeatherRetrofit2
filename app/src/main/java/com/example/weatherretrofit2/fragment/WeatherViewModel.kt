@@ -1,10 +1,12 @@
-package com.example.weatherretrofit2
+package com.example.weatherretrofit2.fragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.weatherretrofit2.WeatherApi
 import com.example.weatherretrofit2.data.DataWeather
 import com.example.weatherretrofit2.data.DataWeatherFromNet
+import com.example.weatherretrofit2.toDomain
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber

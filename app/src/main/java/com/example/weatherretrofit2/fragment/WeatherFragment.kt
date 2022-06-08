@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2
+package com.example.weatherretrofit2.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
+import com.example.weatherretrofit2.WeatherViewModel
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
 import timber.log.Timber
 
@@ -32,6 +32,8 @@ class WeatherFragment : Fragment() {
             Timber.d(it.toString())
         }
     }
+    fun loadDataToAdapter(){}
+
 
     override fun onDestroyView() {
         super.onDestroyView()
