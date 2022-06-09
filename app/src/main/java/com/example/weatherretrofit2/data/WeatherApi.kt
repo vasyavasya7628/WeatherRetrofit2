@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import timber.log.Timber
 
-//doc https://openweathermap.org/forecast5
+//https://openweathermap.org/forecast5
 //https://api.openweathermap.org/data/2.5/forecast?id=1503901&units=metric&appid=2ce0a504eccbb5cc5fdb54b14b60fab2 для Api
 const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
 interface WeatherApi {
