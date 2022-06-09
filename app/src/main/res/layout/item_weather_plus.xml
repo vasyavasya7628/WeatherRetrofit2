@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/dataWeateherPlus"
+        android:id="@+id/textWeather"
         android:layout_width="185dp"
         android:layout_height="48dp"
         android:padding="0dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iconWeatherPlus"
+        android:id="@+id/iconWeather"
         android:layout_width="65dp"
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,12 +29,12 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/tempPlus"
+        android:id="@+id/tempWeather"
         android:layout_width="109dp"
         android:layout_height="48dp"
         android:text="@string/plusTemp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iconWeatherPlus"
+        app:layout_constraintStart_toEndOf="@+id/iconWeather"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
