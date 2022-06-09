@@ -22,7 +22,7 @@ class WeatherFragment : Fragment() {
     private val binding get() = _binding!!
     private val weatherViewModel: WeatherViewModel by viewModels()
     private val weatherAdapter = WeatherAdapter()
-
+    private var savedWeather: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,13 +34,15 @@ class WeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         weatherViewModel.weatherExport.observe(viewLifecycleOwner) {
             loadDataToAdapter(it)
         }
         initRecyclerView()
     }
 
-    fun loadDataToAdapter(weatherDomain: List<DataWeather>) {
+    private fun loadDataToAdapter(weatherDomain: List<DataWeather>) {
         val list = mutableListOf<WeatherSealed>()
         weatherDomain.map { weather ->
             if (weather.temp > STATE_PLUS) {
@@ -49,9 +51,12 @@ class WeatherFragment : Fragment() {
                 list.add(WeatherSealed.WeatherMinus(weather))
             }
         }
+        savedWeather = weatherDomain.toString()
         Timber.d(list.toString())
         weatherAdapter.submitList(list.toMutableList())
     }
+
+
 
     private fun initRecyclerView() {
         binding.recyclerViewWeather.layoutManager = LinearLayoutManager(activity)
