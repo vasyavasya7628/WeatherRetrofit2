@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.fragment
+package com.example.weatherretrofit2.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherretrofit2.data.DataWeather
+import com.example.weatherretrofit2.data.WeatherLocal
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
-import com.example.weatherretrofit2.presentation.WeatherAdapter
-import com.example.weatherretrofit2.presentation.WeatherSealed
 import timber.log.Timber
 
 
@@ -32,19 +30,19 @@ class WeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        weatherViewModel.weatherExport.observe(viewLifecycleOwner) {
-            loadDataToAdapter(it)
-        }
+        subscribeToViewModel()
         initRecyclerView()
     }
 
-    fun loadDataToAdapter(weatherDomain: List<DataWeather>) {
-        val list = mutableListOf<WeatherSealed>()
-        weatherDomain.map { weather ->
-            list.add(WeatherSealed.LoadedWeather(weather))
+    private fun subscribeToViewModel() {
+        weatherViewModel.weatherLiveData.observe(viewLifecycleOwner) {
+            submitDataToAdapter(it)
         }
-        Timber.d(list.toString())
-        weatherAdapter.submitList(list.toMutableList())
+    }
+
+    private fun submitDataToAdapter(weatherLocal: List<WeatherLocal>) {
+
+        weatherAdapter.submitList(weatherLocal.toMutableList())
     }
 
     private fun initRecyclerView() {
