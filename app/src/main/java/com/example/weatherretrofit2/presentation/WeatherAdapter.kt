@@ -28,7 +28,6 @@ class WeatherAdapter : ListAdapter<WeatherLocal, ItemViewHolder>(diffUtil) {
         holder.bind(getItem(position) as WeatherLocal)
     }
 
-
 }
 
 class ItemViewHolder(binding: ItemWeatherPlusBinding) : RecyclerView.ViewHolder(binding.root) {
