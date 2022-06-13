@@ -1,19 +1,18 @@
 package com.example.weatherretrofit2.data
 
-fun WeatherDesrcNw.toDomain(): DataWeather{
-    return DataWeather(
+fun Description.toDomain(): WeatherLocal {
+    return WeatherLocal(
         dt = dt,
         temp = main.temp,
         pressure = main.pressure,
         icon = weather.toDomain().icon
-
     )
 }
 
-fun List<WeatherIconNet>.toDomain(): WeatherIconDomain{
+fun List<WeatherIconNet>.toDomain(): WeatherIconLocal {
     val last: WeatherIconNet = this.last()
 
-    return WeatherIconDomain(
+    return WeatherIconLocal(
         icon = last.icon
     )
 }

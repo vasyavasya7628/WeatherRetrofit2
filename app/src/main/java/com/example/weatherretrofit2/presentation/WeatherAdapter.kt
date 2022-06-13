@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.data
+package com.example.weatherretrofit2.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,23 +6,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.weatherretrofit2.data.WeatherLocal
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-sealed class WeatherSealed {
+sealed class DividerHolders {
 
-    data class WeatherPlus(val weatherPlus: DataWeather) : WeatherSealed()
-    data class WeatherMinus(val weatherMinus: DataWeather) : WeatherSealed()
+    data class WeatherPlus(val weatherPlus: WeatherLocal) : DividerHolders()
+    data class WeatherMinus(val weatherMinus: WeatherLocal) : DividerHolders()
 }
 
-class WeatherAdapter : ListAdapter<WeatherSealed, RecyclerView.ViewHolder>(diffUtil) {
+class WeatherAdapter : ListAdapter<DividerHolders, RecyclerView.ViewHolder>(diffUtil) {
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is WeatherSealed.WeatherMinus -> 0
-            is WeatherSealed.WeatherPlus -> 1
+            is DividerHolders.WeatherMinus -> 0
+            is DividerHolders.WeatherPlus -> 1
         }
     }
 
@@ -49,13 +50,11 @@ class WeatherAdapter : ListAdapter<WeatherSealed, RecyclerView.ViewHolder>(diffU
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when (holder) {
-            is HolderTempMinus -> holder.bind(item as WeatherSealed.WeatherMinus)
-            is HolderTempPlus -> holder.bind(item as WeatherSealed.WeatherPlus)
+            is HolderTempMinus -> holder.bind(item as DividerHolders.WeatherMinus)
+            is HolderTempPlus -> holder.bind(item as DividerHolders.WeatherPlus)
             else -> throw error("error")
         }
     }
-
-
 }
 
 class HolderTempPlus(binding: ItemWeatherPlusBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -63,7 +62,7 @@ class HolderTempPlus(binding: ItemWeatherPlusBinding) : RecyclerView.ViewHolder(
     private val weatherPlus = binding.tempPlus
     private val iconPlus = binding.iconWeatherPlus
 
-    fun bind(item: WeatherSealed.WeatherPlus) {
+    fun bind(item: DividerHolders.WeatherPlus) {
         weatherPlus.text = item.weatherPlus.temp.toString()
         weatherDateView.text = getDateTime(item.weatherPlus.dt.toString())
         Glide.with(iconPlus.context)
@@ -77,7 +76,7 @@ class HolderTempMinus(binding: ItemWeatherMinusBinding) : RecyclerView.ViewHolde
     private val weatherMinus = binding.tempMinus
     private val iconMinus = binding.iconWeatherMinus
 
-    fun bind(item: WeatherSealed.WeatherMinus) {
+    fun bind(item: DividerHolders.WeatherMinus) {
         weatherMinus.text = item.weatherMinus.temp.toString()
         weatherDateView.text = getDateTime(item.weatherMinus.dt.toString())
         Glide.with(iconMinus.context)
@@ -94,30 +93,30 @@ private fun getDateTime(s: String): String? {
     return sdf.format(netDate.time)
 }
 
-private val diffUtil = object : DiffUtil.ItemCallback<WeatherSealed>() {
+private val diffUtil = object : DiffUtil.ItemCallback<DividerHolders>() {
 
-    override fun areItemsTheSame(oldItem: WeatherSealed, newItem: WeatherSealed): Boolean {
+    override fun areItemsTheSame(oldItem: DividerHolders, newItem: DividerHolders): Boolean {
         val isWeatherPlus: Boolean =
-            oldItem is WeatherSealed.WeatherPlus && newItem is WeatherSealed.WeatherPlus
+            oldItem is DividerHolders.WeatherPlus && newItem is DividerHolders.WeatherPlus
 
         if (isWeatherPlus) {
-            oldItem as WeatherSealed.WeatherPlus
-            newItem as WeatherSealed.WeatherPlus
+            oldItem as DividerHolders.WeatherPlus
+            newItem as DividerHolders.WeatherPlus
             return oldItem.weatherPlus.temp == newItem.weatherPlus.temp
         }
 
         val isWeatherMinus: Boolean =
-            oldItem is WeatherSealed.WeatherMinus && newItem is WeatherSealed.WeatherMinus
+            oldItem is DividerHolders.WeatherMinus && newItem is DividerHolders.WeatherMinus
         if (isWeatherMinus) {
-            oldItem as WeatherSealed.WeatherMinus
-            newItem as WeatherSealed.WeatherMinus
+            oldItem as DividerHolders.WeatherMinus
+            newItem as DividerHolders.WeatherMinus
             return oldItem.weatherMinus.temp == newItem.weatherMinus.temp
         }
 
         return false
     }
 
-    override fun areContentsTheSame(oldItem: WeatherSealed, newItem: WeatherSealed): Boolean {
+    override fun areContentsTheSame(oldItem: DividerHolders, newItem: DividerHolders): Boolean {
         return oldItem == newItem
     }
 }
