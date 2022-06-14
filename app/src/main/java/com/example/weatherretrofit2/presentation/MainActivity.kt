@@ -1,6 +1,7 @@
 package com.example.weatherretrofit2.presentation
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
@@ -8,6 +9,8 @@ import com.example.weatherretrofit2.data.WeatherLocal
 import com.example.weatherretrofit2.data.WeatherNetwork
 import com.example.weatherretrofit2.data.toDomain
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
@@ -21,15 +24,37 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val weatherAdapter = WeatherAdapter()
     private val api: WeatherApi = WeatherApi.create()
-
+    private var savedWeather: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.plant(Timber.DebugTree())
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getDataFromNet()
+        if(savedInstanceState == null){
+            getDataFromNet()
+        }else Timber.d("Произошел перевот экрана, данные восстановлены из переменной")
+
         initRecyclerView()
     }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        val gson = Gson()
+        val weatherDomain = gson.fromJson<List<WeatherLocal>>(
+            savedInstanceState.getString("1", ""),
+            object : TypeToken<List<WeatherLocal>>() {}.type
+        )
+        Timber.d("Данные восстановлены из переменной")
+        submitDataToAdapter(weatherDomain)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putString("1", savedWeather)
+    }
+
+
 
     private fun getDataFromNet() {
         api.getForecast(
@@ -46,7 +71,6 @@ class MainActivity : AppCompatActivity() {
                     val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
                         weatherNw.toDomain()
                     }
-                    Timber.d("ANSWer", weatherDomain)
                     submitDataToAdapter(weatherDomain)
                 } else Timber.d("ОТВЕТ", response.message())
             }
@@ -66,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                 list.add(DividerHolders.WeatherMinus(weather))
             }
         }
+        savedWeather = Gson().toJson(list)
         weatherAdapter.submitList(list.toMutableList())
     }
 
