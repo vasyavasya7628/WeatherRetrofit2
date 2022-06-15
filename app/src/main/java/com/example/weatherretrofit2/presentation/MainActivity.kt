@@ -24,14 +24,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val weatherAdapter = WeatherAdapter()
     private val api: WeatherApi = WeatherApi.create()
-    private var tempWeather: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if(savedInstanceState == null){
             getDataFromNet()
-        }else Timber.d("Произошел перевот экрана, данные восстановлены из переменной")
+        }else Timber.d("Произошел перевот экрана, данные восстановлены из Объекта")
 
         initRecyclerView()
     }
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("1", tempWeather)
+        outState.putString("1", WeatherStore.tempWeather)
     }
 
 
@@ -69,9 +68,7 @@ class MainActivity : AppCompatActivity() {
                     val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
                         weatherNw.toDomain()
                     }
-                    tempWeather = Gson().toJson(weatherDomain)
-
-                    Timber.tag("!Данные загружены в tempWeather!").d(tempWeather)
+                    WeatherStore.tempWeather = Gson().toJson(weatherDomain)
                     submitDataToAdapter(weatherDomain)
                 } else Timber.d("ОТВЕТ", response.message())
             }
@@ -100,4 +97,8 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewWeather.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewWeather.adapter = weatherAdapter
     }
+}
+
+object WeatherStore{
+    var tempWeather: String? = null
 }

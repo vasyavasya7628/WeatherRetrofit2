@@ -14,7 +14,6 @@ import java.util.*
 
 
 sealed class DividerHolders {
-
     data class WeatherPlus(val weatherPlus: WeatherLocal) : DividerHolders()
     data class WeatherMinus(val weatherMinus: WeatherLocal) : DividerHolders()
 }
