@@ -7,16 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherretrofit2.data.WeatherLocal
-import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
+import com.example.weatherretrofit2.databinding.ItemWeatherBinding
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class WeatherAdapter : ListAdapter<WeatherLocal, ItemViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
-            ItemWeatherPlusBinding.inflate(
+            ItemWeatherBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -30,7 +29,7 @@ class WeatherAdapter : ListAdapter<WeatherLocal, ItemViewHolder>(diffUtil) {
 
 }
 
-class ItemViewHolder(binding: ItemWeatherPlusBinding) : RecyclerView.ViewHolder(binding.root) {
+class ItemViewHolder(binding: ItemWeatherBinding) : RecyclerView.ViewHolder(binding.root) {
     private val bindItem = binding
     fun bind(item: WeatherLocal) {
         bindItem.tempWeather.text = item.temp.toString()
