@@ -24,9 +24,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val weatherAdapter = WeatherAdapter()
     private val api: WeatherApi = WeatherApi.create()
-    private var savedWeather: String? = null
+    private var tempWeather: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.plant(Timber.DebugTree())
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,19 +38,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-
         val gson = Gson()
         val weatherDomain = gson.fromJson<List<WeatherLocal>>(
             savedInstanceState.getString("1", ""),
             object : TypeToken<List<WeatherLocal>>() {}.type
         )
-        Timber.d("Данные восстановлены из переменной")
         submitDataToAdapter(weatherDomain)
+
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
-        outState.putString("1", savedWeather)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("1", tempWeather)
     }
 
 
@@ -71,6 +69,9 @@ class MainActivity : AppCompatActivity() {
                     val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
                         weatherNw.toDomain()
                     }
+                    tempWeather = Gson().toJson(weatherDomain)
+
+                    Timber.tag("!Данные загружены в tempWeather!").d(tempWeather)
                     submitDataToAdapter(weatherDomain)
                 } else Timber.d("ОТВЕТ", response.message())
             }
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 list.add(DividerHolders.WeatherMinus(weather))
             }
         }
-        savedWeather = Gson().toJson(list)
+
         weatherAdapter.submitList(list.toMutableList())
     }
 
