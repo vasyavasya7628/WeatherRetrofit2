@@ -7,24 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.WeatherLocal
-import com.example.weatherretrofit2.data.WeatherNetwork
-import com.example.weatherretrofit2.data.toDomain
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
 import com.example.weatherretrofit2.model.WeatherViewModel
-import retrofit2.Call
-import retrofit2.Response
-import timber.log.Timber
 
 private const val STATE_PLUS = 15 //сделал 15 градусов для проверки разных холдеров
 
-private const val ID = "1503901"
-private const val MEASUREMENT = "metric"
-private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
 
 class WeatherFragment : Fragment() {
-    private val api: WeatherApi = WeatherApi.create()
+
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
     private val weatherAdapter = WeatherAdapter()
@@ -41,37 +32,9 @@ class WeatherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        if (savedInstanceState == null) {
-            getDataFromNet()
-        } else {
-            submitDataToAdapter(weatherViewModel.weathers)
+        weatherViewModel.weatherExport.observe(viewLifecycleOwner) {
+            submitDataToAdapter(it)
         }
-    }
-
-    private fun getDataFromNet() {
-        api.getForecast(
-            ID,
-            MEASUREMENT,
-            API_KEY
-        ).enqueue(object : retrofit2.Callback<WeatherNetwork> {
-            override fun onResponse(
-                call: Call<WeatherNetwork>,
-                response: Response<WeatherNetwork>
-            ) {
-                if (response.isSuccessful) {
-                    val weather: WeatherNetwork = response.body() as WeatherNetwork
-                    val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
-                        weatherNw.toDomain()
-                    }
-                    weatherViewModel.setWeather(weatherDomain)
-                    submitDataToAdapter(weatherDomain)
-                } else Timber.d("ОТВЕТ", response.message())
-            }
-
-            override fun onFailure(call: Call<WeatherNetwork>, t: Throwable) {
-                Timber.d("Ошибка подлючения или запрос был составлен не правильно")
-            }
-        })
     }
 
     private fun submitDataToAdapter(weatherLocal: List<WeatherLocal>) {
@@ -91,6 +54,11 @@ class WeatherFragment : Fragment() {
     private fun initRecyclerView() {
         binding.recyclerViewWeather.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewWeather.adapter = weatherAdapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }
