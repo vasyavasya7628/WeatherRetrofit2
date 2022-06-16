@@ -5,32 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.WeatherLocal
 import com.example.weatherretrofit2.data.WeatherNetwork
 import com.example.weatherretrofit2.data.toDomain
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
-import com.google.gson.Gson
+import com.example.weatherretrofit2.model.WeatherViewModel
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
 
 private const val STATE_PLUS = 15 //сделал 15 градусов для проверки разных холдеров
+
 private const val ID = "1503901"
 private const val MEASUREMENT = "metric"
 private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
 
 class WeatherFragment : Fragment() {
+    private val api: WeatherApi = WeatherApi.create()
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
     private val weatherAdapter = WeatherAdapter()
-    private val api: WeatherApi = WeatherApi.create()
+    private val weatherViewModel: WeatherViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,8 +40,12 @@ class WeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getDataFromNet()
         initRecyclerView()
+        if (savedInstanceState == null) {
+            getDataFromNet()
+        } else {
+            submitDataToAdapter(weatherViewModel.weathers)
+        }
     }
 
     private fun getDataFromNet() {
@@ -60,7 +63,7 @@ class WeatherFragment : Fragment() {
                     val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
                         weatherNw.toDomain()
                     }
-                    WeatherStore.tempWeather = Gson().toJson(weatherDomain)
+                    weatherViewModel.setWeather(weatherDomain)
                     submitDataToAdapter(weatherDomain)
                 } else Timber.d("ОТВЕТ", response.message())
             }
@@ -90,7 +93,4 @@ class WeatherFragment : Fragment() {
         binding.recyclerViewWeather.adapter = weatherAdapter
     }
 
-    object WeatherStore {
-        var tempWeather: String? = null
-    }
 }
