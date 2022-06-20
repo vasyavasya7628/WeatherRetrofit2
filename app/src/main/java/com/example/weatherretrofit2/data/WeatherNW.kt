@@ -107,7 +107,5 @@ data class WeatherNW(
         @SerializedName("speed")
         val speed: Double
     )
-
-
 }
 
