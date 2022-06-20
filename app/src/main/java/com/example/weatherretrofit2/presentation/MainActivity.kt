@@ -1,11 +1,10 @@
 package com.example.weatherretrofit2.presentation
 
+import WeatherNW
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
-import com.example.weatherretrofit2.data.WeatherFromNetwork
-import com.example.weatherretrofit2.data.WeatherLocal
 import com.example.weatherretrofit2.data.toDomain
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
 import retrofit2.Call
@@ -27,38 +26,34 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getDataNetwork()
+        getDataNW()
         initRecyclerView()
     }
 
-    private fun getDataNetwork() {
+    private fun getDataNW() {
         api.getForecast(
             ID,
             MEASUREMENT,
             API_KEY
-        ).enqueue(object : retrofit2.Callback<WeatherFromNetwork> {
+        ).enqueue(object : retrofit2.Callback<WeatherNW> {
             override fun onResponse(
-                call: Call<WeatherFromNetwork>,
-                response: Response<WeatherFromNetwork>
+                call: Call<WeatherNW>,
+                response: Response<WeatherNW>
             ) {
                 if (response.isSuccessful) {
-                    val weather: WeatherFromNetwork = response.body() as WeatherFromNetwork
-                    val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
-                        weatherNw.toDomain()
-                    }
+                    val weatherDomain =
+                        (response.body() as WeatherNW).list.map { weatherNw ->
+                            weatherNw.toDomain()
+                        }
 
-                    submitDataToAdapter(weatherDomain)
+                    weatherAdapter.submitList(weatherDomain)
                 } else Timber.d("ОТВЕТ", response.message())
             }
 
-            override fun onFailure(call: Call<WeatherFromNetwork>, t: Throwable) {
+            override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
                 Timber.d("Ошибка подлючения или запрос был составлен не правильно")
             }
         })
-    }
-
-    private fun submitDataToAdapter(weatherLocal: List<WeatherLocal>) {
-        weatherAdapter.submitList(weatherLocal)
     }
 
     private fun initRecyclerView() {

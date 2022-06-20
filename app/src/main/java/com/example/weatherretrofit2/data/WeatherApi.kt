@@ -1,5 +1,6 @@
 package com.example.weatherretrofit2.data
 
+import WeatherNW
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,7 +18,7 @@ interface WeatherApi {
         units: String,
         @Query("appid")
         appid: String
-    ): Call<WeatherFromNetwork>
+    ): Call<WeatherNW>
 
     companion object {
         fun create(): WeatherApi {
