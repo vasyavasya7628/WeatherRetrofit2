@@ -1,11 +1,11 @@
 package com.example.weatherretrofit2.presentation
 
+import com.example.weatherretrofit2.data.WeatherNW
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.WeatherLocal
-import com.example.weatherretrofit2.data.WeatherNetwork
 import com.example.weatherretrofit2.data.toDomain
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
 import retrofit2.Call
@@ -27,22 +27,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getDataFromNet()
+        getDataNW()
         initRecyclerView()
     }
 
-    private fun getDataFromNet() {
+    private fun getDataNW() {
         api.getForecast(
             ID,
             MEASUREMENT,
             API_KEY
-        ).enqueue(object : retrofit2.Callback<WeatherNetwork> {
+        ).enqueue(object : retrofit2.Callback<WeatherNW> {
             override fun onResponse(
-                call: Call<WeatherNetwork>,
-                response: Response<WeatherNetwork>
+                call: Call<WeatherNW>,
+                response: Response<WeatherNW>
             ) {
                 if (response.isSuccessful) {
-                    val weather: WeatherNetwork = response.body() as WeatherNetwork
+                    val weather: WeatherNW = response.body() as WeatherNW
                     val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
                         weatherNw.toDomain()
                     }
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 } else Timber.d("ОТВЕТ", response.message())
             }
 
-            override fun onFailure(call: Call<WeatherNetwork>, t: Throwable) {
+            override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
                 Timber.d("Ошибка подлючения или запрос был составлен не правильно")
             }
         })

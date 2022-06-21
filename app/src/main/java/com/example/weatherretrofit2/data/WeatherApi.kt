@@ -17,7 +17,7 @@ interface WeatherApi {
         units: String,
         @Query("appid")
         appid: String
-    ): Call<WeatherNetwork>
+    ): Call<WeatherNW>
 
     companion object {
         fun create(): WeatherApi {
