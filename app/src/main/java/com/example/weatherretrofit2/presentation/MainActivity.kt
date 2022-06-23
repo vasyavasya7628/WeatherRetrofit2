@@ -1,13 +1,12 @@
 package com.example.weatherretrofit2.presentation
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
-import com.example.weatherretrofit2.data.WeatherLocal
-import com.example.weatherretrofit2.data.WeatherNetwork
-import com.example.weatherretrofit2.data.toDomain
+import com.example.weatherretrofit2.data.WeatherNW
+import com.example.weatherretrofit2.data.WeatherUI
+import com.example.weatherretrofit2.data.toUI
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -29,9 +28,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if(savedInstanceState == null){
-            getDataFromNet()
-        }else Timber.d("Произошел перевот экрана, данные восстановлены из переменной")
+        if (savedInstanceState == null) {
+            loadWeather()
+        } else Timber.d("Произошел перевот экрана, данные восстановлены из переменной")
 
         initRecyclerView()
     }
@@ -39,9 +38,9 @@ class MainActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val gson = Gson()
-        val weatherDomain = gson.fromJson<List<WeatherLocal>>(
+        val weatherDomain = gson.fromJson<List<WeatherUI>>(
             savedInstanceState.getString("1", ""),
-            object : TypeToken<List<WeatherLocal>>() {}.type
+            object : TypeToken<List<WeatherUI>>() {}.type
         )
         submitDataToAdapter(weatherDomain)
 
@@ -53,51 +52,47 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-    private fun getDataFromNet() {
+    private fun loadWeather() {
         api.getForecast(
             ID,
             MEASUREMENT,
             API_KEY
-        ).enqueue(object : retrofit2.Callback<WeatherNetwork> {
+        ).enqueue(object : retrofit2.Callback<WeatherNW> {
             override fun onResponse(
-                call: Call<WeatherNetwork>,
-                response: Response<WeatherNetwork>
+                call: Call<WeatherNW>,
+                response: Response<WeatherNW>
             ) {
                 if (response.isSuccessful) {
-                    val weather: WeatherNetwork = response.body() as WeatherNetwork
-                    val weatherDomain: List<WeatherLocal> = weather.list.map { weatherNw ->
-                        weatherNw.toDomain()
-                    }
-                    tempWeather = Gson().toJson(weatherDomain)
-
-                    Timber.tag("!Данные загружены в tempWeather!").d(tempWeather)
-                    submitDataToAdapter(weatherDomain)
+                    val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
+                        weatherNw.toUI()
+                    }.orEmpty()
+                    tempWeather = Gson().toJson(weathers)
+                    submitDataToAdapter(weathers)
                 } else Timber.d("ОТВЕТ", response.message())
             }
 
-            override fun onFailure(call: Call<WeatherNetwork>, t: Throwable) {
-                Timber.d("Ошибка подлючения или запрос был составлен не правильно")
+            override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
+                Timber.e(t)
             }
         })
     }
 
-    private fun submitDataToAdapter(weatherLocal: List<WeatherLocal>) {
-        val list = mutableListOf<DividerHolders>()
-        weatherLocal.map { weather ->
+    private fun submitDataToAdapter(weatherUI: List<WeatherUI>) {
+        val list = mutableListOf<DividerViewHolder>()
+        weatherUI.map { weather ->
             if (weather.temp > STATE_PLUS) {
-                list.add(DividerHolders.WeatherPlus(weather))
+                list.add(DividerViewHolder.WeatherPlus(weather))
             } else {
-                list.add(DividerHolders.WeatherMinus(weather))
+                list.add(DividerViewHolder.WeatherMinus(weather))
             }
         }
 
         weatherAdapter.submitList(list.toMutableList())
     }
 
-
     private fun initRecyclerView() {
-        binding.recyclerViewWeather.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewWeather.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewWeather.adapter = weatherAdapter
     }
 }
