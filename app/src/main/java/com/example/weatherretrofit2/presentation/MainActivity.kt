@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
-import com.example.weatherretrofit2.data.toDomain
+import com.example.weatherretrofit2.data.toUI
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -26,11 +26,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getDataNW()
+        loadWeather()
         initRecyclerView()
     }
 
-    private fun getDataNW() {
+    private fun loadWeather() {
         api.getForecast(
             ID,
             MEASUREMENT,
@@ -41,23 +41,24 @@ class MainActivity : AppCompatActivity() {
                 response: Response<WeatherNW>
             ) {
                 if (response.isSuccessful) {
-                    val weatherDomain =
-                        (response.body() as WeatherNW).list.map { weatherNw ->
-                            weatherNw.toDomain()
-                        }
+                    val weathers =
+                        response.body()?.list?.map { weatherNw ->
+                            weatherNw.toUI()
+                        }.orEmpty()
 
-                    weatherAdapter.submitList(weatherDomain)
+                    weatherAdapter.submitList(weathers)
                 } else Timber.d("ОТВЕТ", response.message())
             }
 
             override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
-                Timber.d("Ошибка подлючения или запрос был составлен не правильно")
+                Timber.e(t)
             }
         })
     }
 
     private fun initRecyclerView() {
-        binding.recyclerViewWeather.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewWeather.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewWeather.adapter = weatherAdapter
     }
 }
