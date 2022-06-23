@@ -6,16 +6,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weatherretrofit2.data.WeatherLocal
+import com.example.weatherretrofit2.data.WeatherUI
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
-import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 sealed class DividerHolders {
-    data class WeatherPlus(val weatherPlus: WeatherLocal) : DividerHolders()
-    data class WeatherMinus(val weatherMinus: WeatherLocal) : DividerHolders()
+    data class WeatherPlus(val weatherPlus: WeatherUI) : DividerHolders()
+    data class WeatherMinus(val weatherMinus: WeatherUI) : DividerHolders()
 }
 
 class WeatherAdapter : ListAdapter<DividerHolders, RecyclerView.ViewHolder>(diffUtil) {
@@ -28,14 +30,14 @@ class WeatherAdapter : ListAdapter<DividerHolders, RecyclerView.ViewHolder>(diff
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            0 -> HolderTempMinus(
+            0 -> MinusViewHolder(
                 ItemWeatherMinusBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            1 -> HolderTempPlus(
+            1 -> PlusViewHolder(
                 ItemWeatherPlusBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -49,47 +51,46 @@ class WeatherAdapter : ListAdapter<DividerHolders, RecyclerView.ViewHolder>(diff
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when (holder) {
-            is HolderTempMinus -> holder.bind(item as DividerHolders.WeatherMinus)
-            is HolderTempPlus -> holder.bind(item as DividerHolders.WeatherPlus)
-            else -> throw error("error")
+            is MinusViewHolder -> holder.bind(item as DividerHolders.WeatherMinus)
+            is PlusViewHolder -> holder.bind(item as DividerHolders.WeatherPlus)
         }
     }
 }
 
-class HolderTempPlus(binding: ItemWeatherPlusBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val weatherDateView = binding.dataWeateherPlus
-    private val weatherPlus = binding.tempPlus
-    private val iconPlus = binding.iconWeatherPlus
+class PlusViewHolder(private val binding: ItemWeatherPlusBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: DividerHolders.WeatherPlus) {
-        weatherPlus.text = item.weatherPlus.temp.toString()
-        weatherDateView.text = getDateTime(item.weatherPlus.dt.toString())
-        Glide.with(iconPlus.context)
+        binding.tempPlus.text = item.weatherPlus.temp.toString()
+        binding.dataWeateherPlus.text = getDateTime(item.weatherPlus.dt.toString())
+        Glide.with(binding.iconWeatherPlus.context)
             .load("https://openweathermap.org/img/wn/${item.weatherPlus.icon}.png")
-            .into(iconPlus)
+            .into(binding.iconWeatherPlus)
     }
 }
 
-class HolderTempMinus(binding: ItemWeatherMinusBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val weatherDateView = binding.dataWeateherMinus
-    private val weatherMinus = binding.tempMinus
-    private val iconMinus = binding.iconWeatherMinus
+class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: DividerHolders.WeatherMinus) {
-        weatherMinus.text = item.weatherMinus.temp.toString()
-        weatherDateView.text = getDateTime(item.weatherMinus.dt.toString())
-        Glide.with(iconMinus.context)
+        binding.tempMinus.text = item.weatherMinus.temp.toString()
+        binding.dataWeateherMinus.text = getDateTime(item.weatherMinus.dt.toString())
+        Glide.with(binding.iconWeatherMinus.context)
             .load("https://openweathermap.org/img/wn/${item.weatherMinus.icon}.png")
-            .into(iconMinus)
+            .into(binding.iconWeatherMinus)
     }
 }
-
 
 private fun getDateTime(s: String): String? {
 
-    val sdf = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.getDefault())
-    val netDate = Date(s.toLong() * 1000)
-    return sdf.format(netDate.time)
+    val triggerTime =
+        LocalDateTime.ofInstant(
+            Instant.ofEpochSecond(
+                s.toLong()
+            ),
+            TimeZone.getDefault().toZoneId()
+        )
+    return DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss").format(triggerTime)
 }
 
 private val diffUtil = object : DiffUtil.ItemCallback<DividerHolders>() {
