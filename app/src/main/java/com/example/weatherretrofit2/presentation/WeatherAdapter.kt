@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weatherretrofit2.data.WeatherUI
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
-import java.text.SimpleDateFormat
+import com.example.weatherretrofit2.ui.WeatherUI
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -80,10 +82,14 @@ class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
 }
 
 private fun getDateTime(s: String): String? {
-
-    val sdf = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.getDefault())
-    val netDate = Date(s.toLong() * 1000)
-    return sdf.format(netDate.time)
+    val triggerTime =
+        LocalDateTime.ofInstant(
+            Instant.ofEpochSecond(
+                s.toLong()
+            ),
+            TimeZone.getDefault().toZoneId()
+        )
+    return DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss").format(triggerTime)
 }
 
 private val diffUtil = object : DiffUtil.ItemCallback<DividerHolders>() {

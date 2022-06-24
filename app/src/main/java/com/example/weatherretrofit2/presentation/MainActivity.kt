@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.WeatherNW
-import com.example.weatherretrofit2.data.WeatherUI
+import com.example.weatherretrofit2.ui.WeatherUI
 import com.example.weatherretrofit2.data.toUI
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
 import retrofit2.Call
@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private val api: WeatherApi = WeatherApi.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.plant(Timber.DebugTree())
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
