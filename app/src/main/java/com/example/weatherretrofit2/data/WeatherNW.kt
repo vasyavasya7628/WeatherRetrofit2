@@ -37,7 +37,6 @@ data class Coord(
     val lon: Double
 )
 
-
 data class Description(
     @SerializedName("clouds")
     val clouds: Clouds,
