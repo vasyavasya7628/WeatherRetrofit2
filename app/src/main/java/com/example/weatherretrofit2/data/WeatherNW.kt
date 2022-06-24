@@ -1,3 +1,5 @@
+package com.example.weatherretrofit2.data
+
 import com.google.gson.annotations.SerializedName
 
 data class WeatherNW(

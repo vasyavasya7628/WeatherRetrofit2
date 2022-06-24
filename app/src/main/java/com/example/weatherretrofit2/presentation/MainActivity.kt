@@ -1,6 +1,6 @@
 package com.example.weatherretrofit2.presentation
 
-import WeatherNW
+import com.example.weatherretrofit2.data.WeatherNW
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private var weatherAdapter = WeatherAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.plant(Timber.DebugTree())
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
