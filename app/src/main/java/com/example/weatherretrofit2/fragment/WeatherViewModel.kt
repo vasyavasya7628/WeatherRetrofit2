@@ -3,7 +3,7 @@ package com.example.weatherretrofit2.fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weatherretrofit2.WeatherApi
+import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.DataWeather
 import com.example.weatherretrofit2.data.DataWeatherFromNet
 import com.example.weatherretrofit2.data.toDomain
