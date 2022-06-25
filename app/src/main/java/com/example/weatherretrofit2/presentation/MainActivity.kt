@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.WeatherNW
-import com.example.weatherretrofit2.ui.WeatherUI
 import com.example.weatherretrofit2.data.toUI
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
+import com.example.weatherretrofit2.ui.WeatherUI
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -18,6 +18,8 @@ private const val STATE_PLUS = 15 //сделал 15 градусов для пр
 private const val ID = "1503901"
 private const val MEASUREMENT = "metric"
 private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
+private const val KEY = "1"
+private const val EMPTY_STRING = ""
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -28,18 +30,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initRecyclerView()
         if (savedInstanceState == null) {
             loadWeather()
         } else Timber.d("Произошел перевот экрана, данные восстановлены из переменной")
-
-        initRecyclerView()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val gson = Gson()
         val weatherDomain = gson.fromJson<List<WeatherUI>>(
-            savedInstanceState.getString("1", ""),
+            savedInstanceState.getString(KEY, EMPTY_STRING),
             object : TypeToken<List<WeatherUI>>() {}.type
         )
         submitDataToAdapter(weatherDomain)
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("1", tempWeather)
+        outState.putString(KEY, tempWeather)
     }
 
 

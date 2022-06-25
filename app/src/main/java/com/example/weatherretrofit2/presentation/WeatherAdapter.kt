@@ -111,7 +111,6 @@ private val diffUtil = object : DiffUtil.ItemCallback<DividerViewHolder>() {
             newItem as DividerViewHolder.WeatherMinus
             return oldItem.weatherMinus.temp == newItem.weatherMinus.temp
         }
-
         return false
     }
 
