@@ -14,6 +14,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+private const val DATE_PATTERN = "yyyy-MM-dd  HH:mm:ss"
 sealed class DividerViewHolder {
 
     data class WeatherPlus(val weatherPlus: WeatherUI) : DividerViewHolder()
@@ -89,7 +90,7 @@ private fun getDateTime(s: String): String? {
             ),
             TimeZone.getDefault().toZoneId()
         )
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss").format(triggerTime)
+    return DateTimeFormatter.ofPattern(DATE_PATTERN).format(triggerTime)
 }
 
 private val diffUtil = object : DiffUtil.ItemCallback<DividerViewHolder>() {
