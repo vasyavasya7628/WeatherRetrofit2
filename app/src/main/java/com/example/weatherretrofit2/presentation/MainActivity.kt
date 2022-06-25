@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.WeatherNW
-import com.example.weatherretrofit2.ui.WeatherUI
 import com.example.weatherretrofit2.data.toUI
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
+import com.example.weatherretrofit2.ui.WeatherUI
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber

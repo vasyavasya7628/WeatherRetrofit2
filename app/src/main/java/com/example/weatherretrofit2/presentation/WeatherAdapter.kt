@@ -95,24 +95,7 @@ private fun getDateTime(s: String): String? {
 private val diffUtil = object : DiffUtil.ItemCallback<DividerHolders>() {
 
     override fun areItemsTheSame(oldItem: DividerHolders, newItem: DividerHolders): Boolean {
-        val isWeatherPlus: Boolean =
-            oldItem is DividerHolders.WeatherPlus && newItem is DividerHolders.WeatherPlus
-
-        if (isWeatherPlus) {
-            oldItem as DividerHolders.WeatherPlus
-            newItem as DividerHolders.WeatherPlus
-            return oldItem.weatherPlus.temp == newItem.weatherPlus.temp
-        }
-
-        val isWeatherMinus: Boolean =
-            oldItem is DividerHolders.WeatherMinus && newItem is DividerHolders.WeatherMinus
-        if (isWeatherMinus) {
-            oldItem as DividerHolders.WeatherMinus
-            newItem as DividerHolders.WeatherMinus
-            return oldItem.weatherMinus.temp == newItem.weatherMinus.temp
-        }
-
-        return false
+       return oldItem == newItem
     }
 
     override fun areContentsTheSame(oldItem: DividerHolders, newItem: DividerHolders): Boolean {
