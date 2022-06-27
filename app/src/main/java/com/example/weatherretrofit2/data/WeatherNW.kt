@@ -112,5 +112,3 @@ data class WeatherNW(
         val speed: Double
     )
 }
-
-

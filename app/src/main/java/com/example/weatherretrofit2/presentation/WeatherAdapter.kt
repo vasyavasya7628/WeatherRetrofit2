@@ -49,7 +49,7 @@ class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil)
         val item = getItem(position)
         when (getItemViewType(position)) {
             TYPE_MINUS -> (holder as MinusViewHolder).bind(item)
-            TYPE_PLUS  -> (holder as PlusViewHolder).bind(item)
+            TYPE_PLUS -> (holder as PlusViewHolder).bind(item)
         }
     }
 }

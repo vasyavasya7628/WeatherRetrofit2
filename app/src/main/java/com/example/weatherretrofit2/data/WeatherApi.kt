@@ -10,6 +10,7 @@ import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+
 interface WeatherApi {
     @GET("forecast")
     fun getForecast(
@@ -43,11 +44,5 @@ interface WeatherApi {
                 .build()
             return retrofit.create(WeatherApi::class.java)
         }
-
     }
-
-
 }
-
-
-

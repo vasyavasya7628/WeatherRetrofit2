@@ -20,9 +20,9 @@ private const val MEASUREMENT = "metric"
 private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private val weatherAdapter = WeatherAdapter()
     private val api: WeatherApi = WeatherApi.create()
+    private val weatherAdapter = WeatherAdapter()
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
