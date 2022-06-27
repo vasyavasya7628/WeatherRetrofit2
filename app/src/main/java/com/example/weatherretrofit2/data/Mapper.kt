@@ -1,19 +1,12 @@
 package com.example.weatherretrofit2.data
 
-fun WeatherDesrcNw.toDomain(): DataWeather{
-    return DataWeather(
+import com.example.weatherretrofit2.ui.WeatherUI
+
+fun WeatherNW.Description.toUI(): WeatherUI {
+    return WeatherUI(
         dt = dt,
         temp = main.temp,
         pressure = main.pressure,
-        icon = weather.toDomain().icon
-
-    )
-}
-
-fun List<WeatherIconNet>.toDomain(): WeatherIconDomain{
-    val last: WeatherIconNet = this.last()
-
-    return WeatherIconDomain(
-        icon = last.icon
+        icon = weather.first().icon
     )
 }
