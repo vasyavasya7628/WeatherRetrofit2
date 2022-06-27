@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadWeather() {
-        if(WeatherStore.tempWeather.isNullOrBlank()){
+        if (WeatherStore.tempWeather.isNullOrBlank()) {
             loadFromNetwork()
-        }else{
+        } else {
             loadFromStore()
         }
     }
