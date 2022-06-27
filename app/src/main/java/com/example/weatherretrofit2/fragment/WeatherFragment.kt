@@ -7,17 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherretrofit2.data.DataWeather
-import com.example.weatherretrofit2.data.WeatherAdapter
-import com.example.weatherretrofit2.data.WeatherSealed
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
+import com.example.weatherretrofit2.presentation.WeatherAdapter
+import com.example.weatherretrofit2.ui.WeatherUI
 import timber.log.Timber
 
 private const val STATE_PLUS = 0
 private const val KEY: String = "1"
 
 class WeatherFragment : Fragment() {
-
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
     private val weatherViewModel: WeatherViewModel by viewModels()
@@ -42,7 +40,7 @@ class WeatherFragment : Fragment() {
         initRecyclerView()
     }
 
-    private fun loadDataToAdapter(weatherDomain: List<DataWeather>) {
+    private fun loadDataToAdapter(weatherDomain: List<WeatherUI>) {
         val list = mutableListOf<WeatherSealed>()
         weatherDomain.map { weather ->
             if (weather.temp > STATE_PLUS) {
@@ -55,7 +53,6 @@ class WeatherFragment : Fragment() {
         Timber.d(list.toString())
         weatherAdapter.submitList(list.toMutableList())
     }
-
 
 
     private fun initRecyclerView() {
