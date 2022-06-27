@@ -6,36 +6,37 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weatherretrofit2.data.WeatherLocal
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
-import java.text.SimpleDateFormat
+import com.example.weatherretrofit2.ui.WeatherUI
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
+private const val TYPE_PLUS = 1
+private const val TYPE_MINUS = 0
+private const val TIME_PATTERN = "yyyy-MM-dd  HH:mm:ss"
+private const val ICON_PATH = "https://openweathermap.org/img/wn/"
+private const val PNG_STRING = ".png"
 
-sealed class DividerHolders {
-    data class WeatherPlus(val weatherPlus: WeatherLocal) : DividerHolders()
-    data class WeatherMinus(val weatherMinus: WeatherLocal) : DividerHolders()
-}
-
-class WeatherAdapter : ListAdapter<DividerHolders, RecyclerView.ViewHolder>(diffUtil) {
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is DividerHolders.WeatherMinus -> 0
-            is DividerHolders.WeatherPlus -> 1
-        }
+class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil) {
+    override fun getItemViewType(position: Int): Int = if (getItem(position).temp > 15) {
+        TYPE_PLUS
+    } else {
+        TYPE_MINUS
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            0 -> HolderTempMinus(
+            TYPE_MINUS -> MinusViewHolder(
                 ItemWeatherMinusBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            1 -> HolderTempPlus(
+            TYPE_PLUS -> PlusViewHolder(
                 ItemWeatherPlusBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -48,74 +49,53 @@ class WeatherAdapter : ListAdapter<DividerHolders, RecyclerView.ViewHolder>(diff
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
-        when (holder) {
-            is HolderTempMinus -> holder.bind(item as DividerHolders.WeatherMinus)
-            is HolderTempPlus -> holder.bind(item as DividerHolders.WeatherPlus)
-            else -> throw error("error")
+        when (getItemViewType(position)) {
+            TYPE_MINUS -> (holder as MinusViewHolder).bind(item)
+            TYPE_PLUS -> (holder as PlusViewHolder).bind(item)
         }
     }
 }
 
-class HolderTempPlus(binding: ItemWeatherPlusBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val weatherDateView = binding.dataWeateherPlus
-    private val weatherPlus = binding.tempPlus
-    private val iconPlus = binding.iconWeatherPlus
-
-    fun bind(item: DividerHolders.WeatherPlus) {
-        weatherPlus.text = item.weatherPlus.temp.toString()
-        weatherDateView.text = getDateTime(item.weatherPlus.dt.toString())
-        Glide.with(iconPlus.context)
-            .load("https://openweathermap.org/img/wn/${item.weatherPlus.icon}.png")
-            .into(iconPlus)
+class PlusViewHolder(private val binding: ItemWeatherPlusBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: WeatherUI) {
+        binding.tempPlus.text = item.temp.toString()
+        binding.dataWeateherPlus.text = getDateTime(item.dt.toString())
+        Glide.with(binding.iconWeatherPlus.context)
+            .load("$ICON_PATH${item.icon}$PNG_STRING")
+            .into(binding.iconWeatherPlus)
     }
 }
 
-class HolderTempMinus(binding: ItemWeatherMinusBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val weatherDateView = binding.dataWeateherMinus
-    private val weatherMinus = binding.tempMinus
-    private val iconMinus = binding.iconWeatherMinus
-
-    fun bind(item: DividerHolders.WeatherMinus) {
-        weatherMinus.text = item.weatherMinus.temp.toString()
-        weatherDateView.text = getDateTime(item.weatherMinus.dt.toString())
-        Glide.with(iconMinus.context)
-            .load("https://openweathermap.org/img/wn/${item.weatherMinus.icon}.png")
-            .into(iconMinus)
+class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: WeatherUI) {
+        binding.tempMinus.text = item.temp.toString()
+        binding.dataWeateherMinus.text = getDateTime(item.dt.toString())
+        Glide.with(binding.iconWeatherMinus.context)
+            .load("$ICON_PATH${item.icon}$PNG_STRING")
+            .into(binding.iconWeatherMinus)
     }
 }
-
 
 private fun getDateTime(s: String): String? {
 
-    val sdf = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.getDefault())
-    val netDate = Date(s.toLong() * 1000)
-    return sdf.format(netDate.time)
+    val triggerTime =
+        LocalDateTime.ofInstant(
+            Instant.ofEpochSecond(
+                s.toLong()
+            ),
+            TimeZone.getDefault().toZoneId()
+        )
+    return DateTimeFormatter.ofPattern(TIME_PATTERN).format(triggerTime)
 }
 
-private val diffUtil = object : DiffUtil.ItemCallback<DividerHolders>() {
-
-    override fun areItemsTheSame(oldItem: DividerHolders, newItem: DividerHolders): Boolean {
-        val isWeatherPlus: Boolean =
-            oldItem is DividerHolders.WeatherPlus && newItem is DividerHolders.WeatherPlus
-
-        if (isWeatherPlus) {
-            oldItem as DividerHolders.WeatherPlus
-            newItem as DividerHolders.WeatherPlus
-            return oldItem.weatherPlus.temp == newItem.weatherPlus.temp
-        }
-
-        val isWeatherMinus: Boolean =
-            oldItem is DividerHolders.WeatherMinus && newItem is DividerHolders.WeatherMinus
-        if (isWeatherMinus) {
-            oldItem as DividerHolders.WeatherMinus
-            newItem as DividerHolders.WeatherMinus
-            return oldItem.weatherMinus.temp == newItem.weatherMinus.temp
-        }
-
-        return false
+private val diffUtil = object : DiffUtil.ItemCallback<WeatherUI>() {
+    override fun areItemsTheSame(oldItem: WeatherUI, newItem: WeatherUI): Boolean {
+        return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: DividerHolders, newItem: DividerHolders): Boolean {
+    override fun areContentsTheSame(oldItem: WeatherUI, newItem: WeatherUI): Boolean {
         return oldItem == newItem
     }
 }
