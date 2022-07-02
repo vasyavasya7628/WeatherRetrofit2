@@ -57,14 +57,11 @@ class MainActivity : AppCompatActivity() {
                 call: Call<WeatherNW>,
                 response: Response<WeatherNW>
             ) {
-                if (response.isSuccessful) {
                     val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
                         weatherNw.toUI()
                     }.orEmpty()
                     WeatherStore.tempWeather = Gson().toJson(weathers)
                     weatherAdapter.submitList(weathers)
-                    Timber.tag("NETWORK").d("СЕТЬ")
-                } else Timber.d("ОТВЕТ", response.message())
             }
 
             override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
