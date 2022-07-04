@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val api: WeatherApi = WeatherApi.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.plant(Timber.DebugTree())
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initRecyclerView()
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadWeather() {
-        if (WeatherStore.tempWeather.isNullOrBlank()) {
+        if (WeatherStore.list.isNullOrBlank()) {
             loadFromNetwork()
         } else {
             loadFromStore()
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFromStore() {
         val weathers = Gson().fromJson<List<WeatherUI>>(
-            WeatherStore.tempWeather,
+            WeatherStore.list,
             object : TypeToken<List<WeatherUI>>() {}.type
         ).toMutableList()
         weatherAdapter.submitList(weathers)
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
                         weatherNw.toUI()
                     }.orEmpty()
-                    WeatherStore.tempWeather = Gson().toJson(weathers)
+                    WeatherStore.list = Gson().toJson(weathers)
                     weatherAdapter.submitList(weathers)
             }
 
