@@ -16,10 +16,12 @@ import java.util.*
 
 private const val TYPE_PLUS = 1
 private const val TYPE_MINUS = 0
+private const val NEUTRAL_NUMBER = 15
+private const val DATE_PATTERN = "yyyy-MM-dd  HH:mm:ss"
 
 
 class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil) {
-    override fun getItemViewType(position: Int): Int = if (getItem(position).temp > 15) {
+    override fun getItemViewType(position: Int): Int = if (getItem(position).temp > NEUTRAL_NUMBER) {
         TYPE_PLUS
     } else {
         TYPE_MINUS
@@ -87,7 +89,7 @@ private fun getDateTime(s: String): String? {
             ),
             TimeZone.getDefault().toZoneId()
         )
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss").format(triggerTime)
+    return DateTimeFormatter.ofPattern(DATE_PATTERN).format(triggerTime)
 }
 
 private val diffUtil = object : DiffUtil.ItemCallback<WeatherUI>() {
