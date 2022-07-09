@@ -1,20 +1,14 @@
 <resources>
     <string name="app_name">WeatherRetrofit</string>
     <string name="textDataWeather">dataFromWeatherNotFound</string>
-    <string name="testtexttest">testTextTest!</string>
     <string name="displayWeatherItem">pressure:%d, temp:%f</string>
     <string name="temperature">\"температура \"</string>
     <string name="apiKey">2ce0a504eccbb5cc5fdb54b14b60fab2</string>
     <string name="forecastId">1503901</string>
     <string name="weatherMeasurement">metric</string>
-    <string name="pressure">\"давление \"</string>
-    <string name="pressureMeasure">\" мм ртутного столба\"</string>
-    <string name="minusTemp">\" мм ртутного столба\"</string>
-    <string name="timeAndDataMinus">\" мм ртутного столба\"</string>
-    <string name="timeAndDataPlus">\" мм ртутного столба\"</string>
-    <string name="plusTemp">\" мм ртутного столба\"</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="load_from_network">Load from network</string>
     <string name="load_from_viewmodel">load from view model</string>
+    <string name="tempCelsius">%1$s °С</string>
+
 </resources>

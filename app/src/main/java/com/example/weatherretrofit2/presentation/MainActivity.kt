@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val api: WeatherApi = WeatherApi.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.plant(Timber.DebugTree())
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initRecyclerView()

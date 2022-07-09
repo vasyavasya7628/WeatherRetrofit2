@@ -21,11 +21,12 @@ private const val DATE_PATTERN = "yyyy-MM-dd  HH:mm:ss"
 
 
 class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil) {
-    override fun getItemViewType(position: Int): Int = if (getItem(position).temp > NEUTRAL_NUMBER) {
-        TYPE_PLUS
-    } else {
-        TYPE_MINUS
-    }
+    override fun getItemViewType(position: Int): Int =
+        if (getItem(position).temp > NEUTRAL_NUMBER) {
+            TYPE_PLUS
+        } else {
+            TYPE_MINUS
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -51,7 +52,7 @@ class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil)
         val item = getItem(position)
         when (getItemViewType(position)) {
             TYPE_MINUS -> (holder as MinusViewHolder).bind(item)
-            TYPE_PLUS  -> (holder as PlusViewHolder).bind(item)
+            TYPE_PLUS -> (holder as PlusViewHolder).bind(item)
         }
     }
 }
@@ -60,11 +61,11 @@ class PlusViewHolder(private val binding: ItemWeatherPlusBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WeatherUI) {
-        binding.tempPlus.text = item.temp.toString()
-        binding.dataWeateherPlus.text = getDateTime(item.dt.toString())
-        Glide.with(binding.iconWeatherPlus.context)
+        binding.tvTempP.text = item.temp.toString()
+        binding.tvDataP.text = getDateTime(item.dt.toString())
+        Glide.with(binding.ivIconP.context)
             .load("https://openweathermap.org/img/wn/${item.icon}.png")
-            .into(binding.iconWeatherPlus)
+            .into(binding.ivIconP)
     }
 }
 
@@ -72,11 +73,12 @@ class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WeatherUI) {
-        binding.tempMinus.text = item.temp.toString()
-        binding.dataWeateherMinus.text = getDateTime(item.dt.toString())
-        Glide.with(binding.iconWeatherMinus.context)
+
+        binding.tvTempM.text = item.temp.toString()
+        binding.tvData.text = getDateTime(item.dt.toString())
+        Glide.with(binding.ivIconM.context)
             .load("https://openweathermap.org/img/wn/${item.icon}.png")
-            .into(binding.iconWeatherMinus)
+            .into(binding.ivIconM)
     }
 }
 

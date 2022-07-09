@@ -2,33 +2,37 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@color/teal_200">
 
     <TextView
-        android:id="@+id/tempMinus"
-        android:layout_width="92dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/minusTemp"
+        android:id="@+id/tvData"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/ivIconM"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="дата" />
 
     <TextView
-        android:id="@+id/dataWeateherMinus"
-        android:layout_width="196dp"
-        android:layout_height="42dp"
-        android:text="@string/timeAndDataMinus"
+        android:id="@+id/tvTempM"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="температура" />
+
 
     <ImageView
-        android:id="@+id/iconWeatherMinus"
+        android:id="@+id/ivIconM"
         android:layout_width="54dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
@@ -45,11 +49,5 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.75" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
