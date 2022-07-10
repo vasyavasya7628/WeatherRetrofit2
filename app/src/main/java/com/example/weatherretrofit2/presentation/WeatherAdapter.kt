@@ -61,7 +61,8 @@ class PlusViewHolder(private val binding: ItemWeatherPlusBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WeatherUI) {
-        binding.tvTempP.text = binding.root.context.getString(R.string.tempCelsius, item.temp.toString())
+        binding.tvTempP.text =
+            binding.root.context.getString(R.string.tempCelsius, item.temp.toString())
         binding.tvDataP.text = getDateTime(item.dt.toString())
         Glide.with(binding.ivIconP.context)
             .load("https://openweathermap.org/img/wn/${item.icon}.png")

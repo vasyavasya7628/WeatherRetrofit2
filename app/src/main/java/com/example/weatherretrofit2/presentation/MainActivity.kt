@@ -57,11 +57,11 @@ class MainActivity : AppCompatActivity() {
                 call: Call<WeatherNW>,
                 response: Response<WeatherNW>
             ) {
-                    val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
-                        weatherNw.toUI()
-                    }.orEmpty()
-                    WeatherStore.list = Gson().toJson(weathers)
-                    weatherAdapter.submitList(weathers)
+                val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
+                    weatherNw.toUI()
+                }.orEmpty()
+                WeatherStore.list = Gson().toJson(weathers)
+                weatherAdapter.submitList(weathers)
             }
 
             override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
