@@ -8,7 +8,6 @@ import com.example.weatherretrofit2.data.WeatherNW
 import com.example.weatherretrofit2.data.WeatherStore
 import com.example.weatherretrofit2.data.toUI
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
-import com.example.weatherretrofit2.ui.WeatherUI
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call

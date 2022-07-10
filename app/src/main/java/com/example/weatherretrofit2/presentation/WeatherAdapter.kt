@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.weatherretrofit2.R
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
-import com.example.weatherretrofit2.ui.WeatherUI
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -61,7 +61,7 @@ class PlusViewHolder(private val binding: ItemWeatherPlusBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WeatherUI) {
-        binding.tvTempP.text = item.temp.toString()
+        binding.tvTempP.text = binding.root.context.getString(R.string.tempCelsius, item.temp.toString())
         binding.tvDataP.text = getDateTime(item.dt.toString())
         Glide.with(binding.ivIconP.context)
             .load("https://openweathermap.org/img/wn/${item.icon}.png")
@@ -74,7 +74,7 @@ class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
 
     fun bind(item: WeatherUI) {
 
-        binding.tvTempM.text = item.temp.toString()
+        binding.tvTempM.text = binding.root.context.getString(R.string.tempCelsius, item.temp)
         binding.tvData.text = getDateTime(item.dt.toString())
         Glide.with(binding.ivIconM.context)
             .load("https://openweathermap.org/img/wn/${item.icon}.png")

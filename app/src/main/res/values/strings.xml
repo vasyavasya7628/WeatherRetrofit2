@@ -1,14 +1,4 @@
 <resources>
     <string name="app_name">WeatherRetrofit</string>
-    <string name="textDataWeather">dataFromWeatherNotFound</string>
-    <string name="displayWeatherItem">pressure:%d, temp:%f</string>
-    <string name="temperature">\"температура \"</string>
-    <string name="apiKey">2ce0a504eccbb5cc5fdb54b14b60fab2</string>
-    <string name="forecastId">1503901</string>
-    <string name="weatherMeasurement">metric</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="load_from_network">Load from network</string>
-    <string name="load_from_viewmodel">load from view model</string>
     <string name="tempCelsius">%1$s °С</string>
-
 </resources>
