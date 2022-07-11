@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
                     weatherNw.toUI()
                 }.orEmpty()
-                WeatherStore.list = weathers.toMutableList()
+                WeatherStore.list = weathers
                 weatherAdapter.submitList(weathers)
             }
 
