@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.data.WeatherApi
 import com.example.weatherretrofit2.data.WeatherNW
+import com.example.weatherretrofit2.data.WeatherUI
 import com.example.weatherretrofit2.data.toDomain
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
-import com.example.weatherretrofit2.ui.WeatherUI
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -85,4 +85,3 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewWeather.adapter = weatherAdapter
     }
 }
-

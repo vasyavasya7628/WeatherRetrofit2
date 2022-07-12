@@ -9,6 +9,7 @@ import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
 
 
 private const val KEY = "1"
+
 class WeatherFragment : Fragment() {
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!

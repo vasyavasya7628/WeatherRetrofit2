@@ -55,7 +55,7 @@ data class WeatherNW(
         @SerializedName("visibility")
         val visibility: Int,
         @SerializedName("weather")
-        val weather: List<WeatherIconNet>,
+        val weather: List<IconNW>,
         @SerializedName("wind")
         val wind: Wind
     )
@@ -96,7 +96,7 @@ data class WeatherNW(
         val pod: String
     )
 
-    data class WeatherIconNet(
+    data class IconNW(
         val description: String,
         val icon: String,
         val id: Int,

@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.ui
+package com.example.weatherretrofit2.data
 
 data class WeatherUI(
     val dt: Int,
