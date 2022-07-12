@@ -8,9 +8,6 @@ import com.example.weatherretrofit2.data.WeatherNW
 import com.example.weatherretrofit2.data.WeatherStore
 import com.example.weatherretrofit2.data.toUI
 import com.example.weatherretrofit2.databinding.ActivityMainBinding
-import com.example.weatherretrofit2.ui.WeatherUI
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
@@ -32,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadWeather() {
-        if (WeatherStore.tempWeather.isNullOrBlank()) {
+        if (WeatherStore.list == null) {
             loadFromNetwork()
         } else {
             loadFromStore()
@@ -40,11 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFromStore() {
-        val weathers = Gson().fromJson<List<WeatherUI>>(
-            WeatherStore.tempWeather,
-            object : TypeToken<List<WeatherUI>>() {}.type
-        ).toMutableList()
-        weatherAdapter.submitList(weathers)
+        weatherAdapter.submitList(WeatherStore.list)
     }
 
     private fun loadFromNetwork() {
@@ -61,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
                         weatherNw.toUI()
                     }.orEmpty()
-                    WeatherStore.tempWeather = Gson().toJson(weathers)
+                    WeatherStore.list = weathers
                     weatherAdapter.submitList(weathers)
                     Timber.tag("NETWORK").d("СЕТЬ")
                 } else Timber.d("ОТВЕТ", response.message())

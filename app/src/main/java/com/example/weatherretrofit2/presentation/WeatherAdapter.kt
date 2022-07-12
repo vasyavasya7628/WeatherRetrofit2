@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.weatherretrofit2.R
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
-import com.example.weatherretrofit2.ui.WeatherUI
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -16,10 +16,12 @@ import java.util.*
 
 private const val TYPE_PLUS = 1
 private const val TYPE_MINUS = 0
-
+private const val DATE_PATTERN = "yyyy-MM-dd  HH:mm:ss"
+private const val IMAGE_URL = "https://openweathermap.org/img/wn/"
+private const val NEUTRAL_NUM = 15
 
 class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil) {
-    override fun getItemViewType(position: Int): Int = if (getItem(position).temp > 15) {
+    override fun getItemViewType(position: Int): Int = if (getItem(position).temp > NEUTRAL_NUM) {
         TYPE_PLUS
     } else {
         TYPE_MINUS
@@ -58,11 +60,12 @@ class PlusViewHolder(private val binding: ItemWeatherPlusBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WeatherUI) {
-        binding.tempPlus.text = item.temp.toString()
-        binding.dataWeateherPlus.text = getDateTime(item.dt.toString())
-        Glide.with(binding.iconWeatherPlus.context)
-            .load("https://openweathermap.org/img/wn/${item.icon}.png")
-            .into(binding.iconWeatherPlus)
+        binding.tvTempP.text =
+            binding.root.context.getString(R.string.tempCelsius, item.temp.toString())
+        binding.tvDataP.text = getDateTime(item.dt.toString())
+        Glide.with(binding.ivIconP.context)
+            .load("$IMAGE_URL${item.icon}.png")
+            .into(binding.ivIconP)
     }
 }
 
@@ -70,16 +73,15 @@ class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WeatherUI) {
-        binding.tempMinus.text = item.temp.toString()
-        binding.dataWeateherMinus.text = getDateTime(item.dt.toString())
-        Glide.with(binding.iconWeatherMinus.context)
-            .load("https://openweathermap.org/img/wn/${item.icon}.png")
-            .into(binding.iconWeatherMinus)
+        binding.tvTempM.text = binding.root.context.getString(R.string.tempCelsius, item.temp)
+        binding.tvData.text = getDateTime(item.dt.toString())
+        Glide.with(binding.ivIconM.context)
+            .load("$IMAGE_URL${item.icon}.png")
+            .into(binding.ivIconM)
     }
 }
 
 private fun getDateTime(s: String): String? {
-
     val triggerTime =
         LocalDateTime.ofInstant(
             Instant.ofEpochSecond(
@@ -87,7 +89,7 @@ private fun getDateTime(s: String): String? {
             ),
             TimeZone.getDefault().toZoneId()
         )
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss").format(triggerTime)
+    return DateTimeFormatter.ofPattern(DATE_PATTERN).format(triggerTime)
 }
 
 private val diffUtil = object : DiffUtil.ItemCallback<WeatherUI>() {

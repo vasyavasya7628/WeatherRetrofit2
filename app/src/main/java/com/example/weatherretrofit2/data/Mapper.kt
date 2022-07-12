@@ -1,6 +1,6 @@
 package com.example.weatherretrofit2.data
 
-import com.example.weatherretrofit2.ui.WeatherUI
+import com.example.weatherretrofit2.presentation.WeatherUI
 
 fun WeatherNW.Description.toUI(): WeatherUI {
     return WeatherUI(
