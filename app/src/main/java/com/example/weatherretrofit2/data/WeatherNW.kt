@@ -7,7 +7,7 @@ data class WeatherNW(
     val cnt: Int,
     val cod: String,
     val list: List<Description>,
-    val message: Int
+    val message: Int,
 ) {
     data class City(
         @SerializedName("coord")
@@ -25,14 +25,14 @@ data class WeatherNW(
         @SerializedName("sunset")
         val sunset: Int,
         @SerializedName("timezone")
-        val timezone: Int
+        val timezone: Int,
     )
 
     data class Coord(
         @SerializedName("lat")
         val lat: Double,
         @SerializedName("lon")
-        val lon: Double
+        val lon: Double,
     )
 
 
@@ -56,12 +56,12 @@ data class WeatherNW(
         @SerializedName("weather")
         val weather: List<IconNW>,
         @SerializedName("wind")
-        val wind: Wind
+        val wind: Wind,
     )
 
     data class Clouds(
         @SerializedName("all")
-        val all: Int
+        val all: Int,
     )
 
     data class Main(
@@ -82,24 +82,24 @@ data class WeatherNW(
         @SerializedName("temp_max")
         val tempMax: Double,
         @SerializedName("temp_min")
-        val tempMin: Double
+        val tempMin: Double,
     )
 
     data class Rain(
         @SerializedName("3h")
-        val h: Double
+        val h: Double,
     )
 
     data class Sys(
         @SerializedName("pod")
-        val pod: String
+        val pod: String,
     )
 
     data class IconNW(
         val description: String,
         val icon: String,
         val id: Int,
-        val main: String
+        val main: String,
     )
 
     data class Wind(
@@ -108,6 +108,6 @@ data class WeatherNW(
         @SerializedName("gust")
         val gust: Double,
         @SerializedName("speed")
-        val speed: Double
+        val speed: Double,
     )
 }

@@ -48,16 +48,13 @@ class MainActivity : AppCompatActivity() {
         ).enqueue(object : retrofit2.Callback<WeatherNW> {
             override fun onResponse(
                 call: Call<WeatherNW>,
-                response: Response<WeatherNW>
+                response: Response<WeatherNW>,
             ) {
-                if (response.isSuccessful) {
-                    val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
-                        weatherNw.toUI()
-                    }.orEmpty()
-                    WeatherStore.list = weathers
-                    weatherAdapter.submitList(weathers)
-                    Timber.tag("NETWORK").d("СЕТЬ")
-                } else Timber.d("ОТВЕТ", response.message())
+                val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
+                    weatherNw.toUI()
+                }.orEmpty()
+                WeatherStore.list = weathers
+                weatherAdapter.submitList(weathers)
             }
 
             override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
