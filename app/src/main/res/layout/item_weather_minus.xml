@@ -2,13 +2,12 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="48dp">
 
     <TextView
         android:id="@+id/tvData"
-        tools:text="дата"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginVertical="8dp"
@@ -18,11 +17,11 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="дата" />
 
     <TextView
         android:id="@+id/tvTempM"
-        tools:text="температура"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginVertical="8dp"
@@ -31,18 +30,19 @@
         app:layout_constraintStart_toEndOf="@+id/tvData"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="температура" />
 
     <ImageView
         android:id="@+id/ivIconM"
         android:layout_width="54dp"
         android:layout_height="36dp"
+        android:contentDescription="@string/autofillHints"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@color/purple_200"
-        android:contentDescription="@string/autofillHints" />
+        app:srcCompat="@color/purple_200" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

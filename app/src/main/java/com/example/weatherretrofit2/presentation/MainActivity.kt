@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
                     weatherNw.toDomain()
                 }.orEmpty()
-                saveDataToFragment(Gson().toJson(weathers))
+                saveWeather(Gson().toJson(weathers))
                 weatherAdapter.submitList(weathers)
             }
 
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun saveDataToFragment(list: String){
+    fun saveWeather(list: String){
         val bundle = Bundle()
         bundle.putString(KEY, list)
         weatherFragment.arguments = bundle
@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         ).toMutableList()
         weatherAdapter.submitList(weathers)
     }
-
 
     private fun initRecyclerView() {
         binding.recyclerViewWeather.layoutManager =

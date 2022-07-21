@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivIconP"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="temphtemphtemphtemph" />
+        tools:text="temphtemp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
