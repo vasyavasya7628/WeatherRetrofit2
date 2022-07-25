@@ -26,7 +26,6 @@ class WeatherFragment : Fragment() {
     ): View {
         _binding = FragmentWeatherBinding.inflate(layoutInflater, container, false)
         savedList = arguments?.getString(KEY)
-        Timber.d(savedList)
         return binding.root
     }
 
