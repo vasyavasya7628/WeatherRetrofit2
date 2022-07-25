@@ -81,11 +81,11 @@ class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
     }
 }
 
-private fun getDateTime(s: String): String? {
+private fun getDateTime(time: String): String? {
     val triggerTime =
         LocalDateTime.ofInstant(
             Instant.ofEpochSecond(
-                s.toLong()
+                time.toLong()
             ),
             TimeZone.getDefault().toZoneId()
         )

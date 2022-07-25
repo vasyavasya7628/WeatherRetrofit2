@@ -7,9 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
 
 interface WeatherApi {
     @GET("forecast")
@@ -32,9 +31,6 @@ interface WeatherApi {
             }
             val okHttpClient = OkHttpClient.Builder()
                 .addNetworkInterceptor(netLog)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
