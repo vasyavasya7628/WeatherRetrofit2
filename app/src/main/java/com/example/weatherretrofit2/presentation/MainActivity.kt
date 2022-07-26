@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         if (supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) == null) {
             loadFromNetwork()
         } else {
-            loadFromFragment()
+            loadFromStore()
         }
     }
 
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         weatherFragment.arguments = bundle
     }
 
-    private fun loadFromFragment() {
+    private fun loadFromStore() {
 
         val gson = GsonBuilder()
             .serializeNulls()
