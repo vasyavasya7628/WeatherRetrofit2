@@ -80,14 +80,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFromStore() {
-
         val gson = GsonBuilder()
             .serializeNulls()
             .create()
         weatherFragment = supportFragmentManager
             .findFragmentByTag(FRAGMENT_TAG) as WeatherFragment
         val weathers = gson.fromJson<List<WeatherUI>>(
-            weatherFragment.getWeather(),
+            weatherFragment.savedList,
             object : TypeToken<List<WeatherUI>>() {}.type
         ).toMutableList()
         weatherAdapter.submitList(weathers)
