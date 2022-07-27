@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.presentation
+package com.example.weatherretrofit2.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         if(savedInstanceState == null){
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragmentWeather, weatherFragment)
+                .replace(R.id.mainContainer, weatherFragment)
                 .commit()
         }
     }

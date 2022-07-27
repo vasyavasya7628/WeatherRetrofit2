@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.presentation
+package com.example.weatherretrofit2.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,21 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherretrofit2.data.WeatherApi
+import com.example.weatherretrofit2.App
 import com.example.weatherretrofit2.data.WeatherNW
 import com.example.weatherretrofit2.data.toDomain
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
-import com.example.weatherretrofit2.model.WeatherViewModel
-import com.example.weatherretrofit2.ui.WeatherUI
+import com.example.weatherretrofit2.viewmodels.WeatherViewModel
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
+
 private const val ID = "1503901"
 private const val MEASUREMENT = "metric"
 private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
 
 class WeatherFragment : Fragment() {
-    private val api: WeatherApi = WeatherApi.create()
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
     private val weatherAdapter = WeatherAdapter()
@@ -29,7 +28,7 @@ class WeatherFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentWeatherBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -45,19 +44,23 @@ class WeatherFragment : Fragment() {
         if (weatherViewModel.weathers.isEmpty()) {
             loadFromNetwork()
         } else {
-            weatherAdapter.submitList(weatherViewModel.weathers)
+            loadFromStore()
         }
     }
 
+    private fun loadFromStore() {
+        weatherAdapter.submitList(weatherViewModel.weathers)
+    }
+
     private fun loadFromNetwork() {
-        api.getForecast(
+        App().api.getForecast(
             ID,
             MEASUREMENT,
             API_KEY
         ).enqueue(object : retrofit2.Callback<WeatherNW> {
             override fun onResponse(
                 call: Call<WeatherNW>,
-                response: Response<WeatherNW>
+                response: Response<WeatherNW>,
             ) {
                 val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
                     weatherNw.toDomain()
@@ -76,5 +79,10 @@ class WeatherFragment : Fragment() {
         binding.recyclerViewWeather.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewWeather.adapter = weatherAdapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

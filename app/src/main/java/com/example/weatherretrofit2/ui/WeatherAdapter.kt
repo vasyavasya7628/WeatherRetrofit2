@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.presentation
+package com.example.weatherretrofit2.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.weatherretrofit2.R
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
-import com.example.weatherretrofit2.ui.WeatherUI
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -19,9 +19,10 @@ private const val TYPE_MINUS = 0
 private const val TIME_PATTERN = "yyyy-MM-dd  HH:mm:ss"
 private const val ICON_PATH = "https://openweathermap.org/img/wn/"
 private const val PNG_STRING = ".png"
+private const val LOWER_TEMP = 15
 
 class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil) {
-    override fun getItemViewType(position: Int): Int = if (getItem(position).temp > 15) {
+    override fun getItemViewType(position: Int) = if (getItem(position).temp > LOWER_TEMP) {
         TYPE_PLUS
     } else {
         TYPE_MINUS
@@ -59,31 +60,31 @@ class WeatherAdapter : ListAdapter<WeatherUI, RecyclerView.ViewHolder>(diffUtil)
 class PlusViewHolder(private val binding: ItemWeatherPlusBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: WeatherUI) {
-        binding.tempPlus.text = item.temp.toString()
-        binding.dataWeateherPlus.text = getDateTime(item.dt.toString())
-        Glide.with(binding.iconWeatherPlus.context)
+        binding.tvTempP.text = binding.root.context.getString(R.string.tempCelsius, item.temp)
+        binding.tvDataP.text = getDateTime(item.dt.toString())
+        Glide.with(binding.ivIconP.context)
             .load("$ICON_PATH${item.icon}$PNG_STRING")
-            .into(binding.iconWeatherPlus)
+            .into(binding.ivIconP)
     }
 }
 
 class MinusViewHolder(private val binding: ItemWeatherMinusBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: WeatherUI) {
-        binding.tempMinus.text = item.temp.toString()
-        binding.dataWeateherMinus.text = getDateTime(item.dt.toString())
-        Glide.with(binding.iconWeatherMinus.context)
+        binding.tvTempM.text = binding.root.context.getString(R.string.tempCelsius, item.temp)
+        binding.tvData.text = getDateTime(item.dt.toString())
+        Glide.with(binding.ivIconM.context)
             .load("$ICON_PATH${item.icon}$PNG_STRING")
-            .into(binding.iconWeatherMinus)
+            .into(binding.ivIconM)
     }
 }
 
-private fun getDateTime(s: String): String? {
+private fun getDateTime(time: String): String? {
 
     val triggerTime =
         LocalDateTime.ofInstant(
             Instant.ofEpochSecond(
-                s.toLong()
+                time.toLong()
             ),
             TimeZone.getDefault().toZoneId()
         )
