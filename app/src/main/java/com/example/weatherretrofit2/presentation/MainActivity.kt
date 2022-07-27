@@ -15,7 +15,6 @@ import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
 
-
 private const val ID = "1503901"
 private const val MEASUREMENT = "metric"
 private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
