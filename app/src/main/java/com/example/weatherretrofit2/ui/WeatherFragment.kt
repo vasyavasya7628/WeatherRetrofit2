@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherretrofit2.App
 import com.example.weatherretrofit2.data.WeatherNW
-import com.example.weatherretrofit2.data.toDomain
+import com.example.weatherretrofit2.data.toUi
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
 import com.example.weatherretrofit2.viewmodels.WeatherViewModel
 import retrofit2.Call
@@ -41,7 +41,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun loadWeather() {
-        if (weatherViewModel.weathers.isEmpty()) {
+        if (weatherViewModel.getWeather().isEmpty()) {
             loadFromNetwork()
         } else {
             loadFromStore()
@@ -49,7 +49,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun loadFromStore() {
-        weatherAdapter.submitList(weatherViewModel.weathers)
+        weatherAdapter.submitList(weatherViewModel.getWeather())
     }
 
     private fun loadFromNetwork() {
@@ -63,7 +63,7 @@ class WeatherFragment : Fragment() {
                 response: Response<WeatherNW>,
             ) {
                 val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNw ->
-                    weatherNw.toDomain()
+                    weatherNw.toUi()
                 }.orEmpty()
                 weatherViewModel.setWeather(weathers)
                 weatherAdapter.submitList(weathers)
@@ -81,8 +81,8 @@ class WeatherFragment : Fragment() {
         binding.recyclerViewWeather.adapter = weatherAdapter
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

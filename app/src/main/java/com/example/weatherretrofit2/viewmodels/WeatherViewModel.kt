@@ -5,8 +5,11 @@ import com.example.weatherretrofit2.ui.WeatherUI
 
 class WeatherViewModel : ViewModel() {
 
-    var weathers: MutableList<WeatherUI> = mutableListOf()
+    private var weathers: List<WeatherUI> = listOf()
     fun setWeather(weather: List<WeatherUI>) {
-        weathers.addAll(weather)
+        weathers = weather
+    }
+    fun getWeather(): List<WeatherUI> {
+        return weathers
     }
 }
