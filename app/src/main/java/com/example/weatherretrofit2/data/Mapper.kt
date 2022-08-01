@@ -1,6 +1,8 @@
 package com.example.weatherretrofit2.data
 
-fun WeatherNW.Description.toDomain(): WeatherUI {
+import com.example.weatherretrofit2.ui.WeatherUI
+
+fun WeatherNW.Description.toUI(): WeatherUI {
     return WeatherUI(
         dt = dt,
         temp = main.temp,

@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.presentation
+package com.example.weatherretrofit2.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherretrofit2.R
-import com.example.weatherretrofit2.data.WeatherUI
 import com.example.weatherretrofit2.databinding.ItemWeatherMinusBinding
 import com.example.weatherretrofit2.databinding.ItemWeatherPlusBinding
 import java.time.Instant
