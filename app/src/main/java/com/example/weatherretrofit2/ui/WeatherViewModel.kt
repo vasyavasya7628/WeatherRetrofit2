@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.viewmodels
+package com.example.weatherretrofit2.ui
 
 import androidx.lifecycle.ViewModel
 import com.example.weatherretrofit2.ui.WeatherUI

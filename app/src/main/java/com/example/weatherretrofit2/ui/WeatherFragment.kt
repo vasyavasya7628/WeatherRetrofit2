@@ -11,7 +11,6 @@ import com.example.weatherretrofit2.App
 import com.example.weatherretrofit2.data.WeatherNW
 import com.example.weatherretrofit2.data.toUi
 import com.example.weatherretrofit2.databinding.FragmentWeatherBinding
-import com.example.weatherretrofit2.viewmodels.WeatherViewModel
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
