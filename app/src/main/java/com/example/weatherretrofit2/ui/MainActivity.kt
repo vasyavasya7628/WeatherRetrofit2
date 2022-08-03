@@ -78,7 +78,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFromStore() {
-        initRetainFragment()
         weatherAdapter.submitList(weatherFragment.getWeather())
     }
 
