@@ -1,4 +1,4 @@
-package com.example.weatherretrofit2.presentation
+package com.example.weatherretrofit2.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -21,4 +21,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
