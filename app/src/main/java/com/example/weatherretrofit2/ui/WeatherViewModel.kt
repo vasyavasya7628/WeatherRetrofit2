@@ -14,14 +14,13 @@ private const val MEASUREMENT = "metric"
 private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
 
 class WeatherViewModel : ViewModel() {
-    private var _weather: MutableLiveData<List<WeatherUI>> =
-        MutableLiveData<List<WeatherUI>>()
+    var weather = MutableLiveData<List<WeatherUI>>().apply {
+        value = listOf()
+    }
 
     init {
         getDataFromNet()
     }
-
-    fun getWeather() = _weather
 
     private fun getDataFromNet() {
         App().api.getForecast(
@@ -36,7 +35,7 @@ class WeatherViewModel : ViewModel() {
                 val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNW ->
                     weatherNW.toUI()
                 }.orEmpty()
-                _weather.value = weathers
+                weather.value = weathers
             }
 
             override fun onFailure(call: Call<WeatherNW>, t: Throwable) {

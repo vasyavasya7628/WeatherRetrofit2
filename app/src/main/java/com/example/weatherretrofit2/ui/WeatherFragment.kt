@@ -31,7 +31,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun loadFromViewModel() {
-        weatherViewModel.getWeather().observe(viewLifecycleOwner) {
+        weatherViewModel.weather.observe(viewLifecycleOwner) {
             weatherAdapter.submitList(it.toMutableList())
         }
     }
