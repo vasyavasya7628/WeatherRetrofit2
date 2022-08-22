@@ -1,5 +1,6 @@
 package com.example.weatherretrofit2.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weatherretrofit2.App
@@ -14,9 +15,8 @@ private const val MEASUREMENT = "metric"
 private const val API_KEY = "2ce0a504eccbb5cc5fdb54b14b60fab2"
 
 class WeatherViewModel : ViewModel() {
-    var weather = MutableLiveData<List<WeatherUI>>().apply {
-        value = listOf()
-    }
+    private var _weather = MutableLiveData<List<WeatherUI>>()
+    val weather: LiveData<List<WeatherUI>> get() = _weather
 
     init {
         getDataFromNet()
@@ -35,7 +35,7 @@ class WeatherViewModel : ViewModel() {
                 val weathers: List<WeatherUI> = response.body()?.list?.map { weatherNW ->
                     weatherNW.toUI()
                 }.orEmpty()
-                weather.value = weathers
+                _weather.value = weathers
             }
 
             override fun onFailure(call: Call<WeatherNW>, t: Throwable) {
